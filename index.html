@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skullgirls Mobile Store</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #a78bfa;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f1f5f9;
+            --border: #334155;
+            --card-bg: #1e293b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background: rgba(15, 23, 42, 0.8) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 0;
+        }
+        
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light) !important;
+            letter-spacing: -0.5px;
+        }
+        
+        .navbar-brand span {
+            color: var(--primary);
+        }
+        
+        .lang-switch, .currency-switch {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--light);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        
+        .lang-switch:hover, .currency-switch:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 80px 20px 60px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--light);
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            line-height: 1.1;
+        }
+        
+        .hero .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            font-weight: 400;
+        }
+        
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin: 40px 0;
+        }
+        
+        .filter-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: #94a3b8;
+            padding: 10px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
+        .filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            margin-bottom: 30px;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+        }
+        
+        .card-img-placeholder {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, var(--dark), var(--card-bg));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-img-placeholder::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .card-body {
+            padding: 24px;
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--light);
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+        
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 16px 0;
+        }
+        
+        .tag {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--accent);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        
+        .price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--light);
+            margin-top: 20px;
+            letter-spacing: -1px;
+        }
+        
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--light);
+        }
+        
+        .modal-header {
+            border-bottom: 1px solid var(--border);
+            padding: 24px;
+        }
+        
+        .modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--light);
+            letter-spacing: -1px;
+        }
+        
+        .modal-body {
+            padding: 24px;
+        }
+        
+        .btn-close {
+            filter: invert(1);
+            opacity: 0.5;
+        }
+        
+        .btn-close:hover {
+            opacity: 1;
+        }
+        
+        .relics-section {
+            background: rgba(99, 102, 241, 0.08);
+            padding: 24px;
+            border-radius: 12px;
+            margin: 24px 0;
+            border: 1px solid rgba(99, 102, 241, 0.15);
+        }
+        
+        .relics-section h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+        
+        .relic-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px;
+            margin: 10px 0;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .relic-item span {
+            color: #94a3b8;
+            font-weight: 500;
+        }
+        
+        .relic-item strong {
+            color: var(--light);
+            font-size: 1.2rem;
+        }
+        
+        .description-section {
+            margin-top: 24px;
+        }
+        
+        .description-section h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--light);
+        }
+        
+        .description-section p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #94a3b8;
+        }
+        
+        .discord-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        
+        .discord-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+            color: white;
+        }
+        
+        .modal-footer-custom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            margin-top: 24px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+            border-top: 1px solid var(--border);
+            color: #64748b;
+        }
+        
+        footer p {
+            margin: 8px 0;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .modal-footer-custom {
+                flex-direction: column;
+                gap: 20px;
+                align-items: stretch;
+            }
+            
+            .discord-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><span>Skullgirls</span> Store</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <button class="lang-switch" onclick="toggleLanguage()">
+                    <i class="fas fa-globe"></i> <span id="langText">EN</span>
+                </button>
+                <button class="currency-switch" onclick="toggleCurrency()">
+                    <i class="fas fa-dollar-sign"></i> <span id="currencyText">USD</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h1><span class="gradient-text" id="heroTitle">Premium Accounts</span></h1>
+            <p id="heroSubtitle">Contas premium de Skullgirls Mobile com os melhores preços</p>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterAccounts('all')" data-en="All Accounts" data-pt="Todas as Contas">Todas as Contas</button>
+            <button class="filter-btn" onclick="filterAccounts('high-end')" data-en="High End" data-pt="High End">High End</button>
+            <button class="filter-btn" onclick="filterAccounts('low-end')" data-en="Low End" data-pt="Low End">Low End</button>
+            <button class="filter-btn" onclick="filterAccounts('custo-beneficio')" data-en="Best Value" data-pt="Custo Benefício">Custo Benefício</button>
+        </div>
+
+        <div class="row" id="accountsContainer"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="accountModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="modalTitle"></h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="modalBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p id="footerText">© 2025 Skullgirls Mobile Store. Todos os direitos reservados.</p>
+        <p><small id="footerDisclaimer">Site não oficial. Skullgirls é marca registrada de Autumn Games.</small></p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentLang = 'pt';
+        let currentCurrency = 'BRL';
+        let exchangeRate = 5.5;
+        
+        const accounts = [
+            {
+                id: 1,
+                name: "Conta Elite Diamante",
+                type: "high-end",
+                priceUSD: 150,
+                relics: {
+                    diamond: 25,
+                    gold: 50
+                },
+                description: {
+                    pt: "Conta completa com personagens raros e diamantes premium. Ideal para jogadores que buscam o máximo de poder e competitividade no jogo.",
+                    en: "Complete account with rare characters and premium diamonds. Perfect for players seeking maximum power and competitiveness in the game."
+                }
+            },
+            {
+                id: 2,
+                name: "Conta Iniciante Plus",
+                type: "low-end",
+                priceUSD: 35,
+                relics: {
+                    diamond: 3,
+                    gold: 15
+                },
+                description: {
+                    pt: "Ótima conta para começar sua jornada no Skullgirls Mobile com bons recursos iniciais e personagens essenciais.",
+                    en: "Great account to start your Skullgirls Mobile journey with good initial resources and essential characters."
+                }
+            },
+            {
+                id: 3,
+                name: "Conta Ouro Premium",
+                type: "custo-beneficio",
+                priceUSD: 80,
+                relics: {
+                    diamond: 12,
+                    gold: 35
+                },
+                description: {
+                    pt: "Melhor custo-benefício disponível! Conta equilibrada com ótimos personagens e recursos abundantes para progredir rapidamente.",
+                    en: "Best value available! Balanced account with great characters and abundant resources to progress quickly."
+                }
+            },
+            {
+                id: 4,
+                name: "Conta Pro Fighter",
+                type: "high-end",
+                priceUSD: 200,
+                relics: {
+                    diamond: 40,
+                    gold: 80
+                },
+                description: {
+                    pt: "Para competidores sérios! Conta top tier com todos os recursos necessários para dominar as competições e rankings.",
+                    en: "For serious competitors! Top tier account with all resources needed to dominate competitions and rankings."
+                }
+            }
+        ];
+
+        async function fetchExchangeRate() {
+            try {
+                const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+                const data = await response.json();
+                exchangeRate = data.rates.BRL;
+            } catch (error) {
+                console.log('Using fallback exchange rate');
+            }
+            renderAccounts();
+        }
+
+        const translations = {
+            pt: {
+                heroTitle: "Contas Premium",
+                heroSubtitle: "Contas premium de Skullgirls Mobile com os melhores preços",
+                relicsTitle: "Relíquias Disponíveis",
+                diamond: "Relíquias Diamante",
+                gold: "Relíquias de Ouro",
+                description: "Descrição da Conta",
+                buyNow: "Comprar no Discord",
+                footerText: "© 2025 Skullgirls Mobile Store. Todos os direitos reservados.",
+                footerDisclaimer: "Site não oficial. Skullgirls é marca registrada de Autumn Games."
+            },
+            en: {
+                heroTitle: "Premium Accounts",
+                heroSubtitle: "Premium Skullgirls Mobile accounts at the best prices",
+                relicsTitle: "Available Relics",
+                diamond: "Diamond Relics",
+                gold: "Gold Relics",
+                description: "Account Description",
+                buyNow: "Buy on Discord",
+                footerText: "© 2025 Skullgirls Mobile Store. All rights reserved.",
+                footerDisclaimer: "Unofficial website. Skullgirls is a registered trademark of Autumn Games."
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'pt' ? 'en' : 'pt';
+            document.getElementById('langText').textContent = currentLang === 'pt' ? 'EN' : 'PT';
+            updateTranslations();
+            renderAccounts();
+        }
+
+        function toggleCurrency() {
+            currentCurrency = currentCurrency === 'BRL' ? 'USD' : 'BRL';
+            document.getElementById('currencyText').textContent = currentCurrency;
+            renderAccounts();
+        }
+
+        function updateTranslations() {
+            const t = translations[currentLang];
+            document.getElementById('heroTitle').textContent = t.heroTitle;
+            document.getElementById('heroSubtitle').textContent = t.heroSubtitle;
+            document.getElementById('footerText').textContent = t.footerText;
+            document.getElementById('footerDisclaimer').textContent = t.footerDisclaimer;
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.textContent = btn.getAttribute(`data-${currentLang}`);
+            });
+        }
+
+        function formatPrice(priceUSD) {
+            if (currentCurrency === 'USD') {
+                return `$${priceUSD.toFixed(2)}`;
+            } else {
+                const priceBRL = priceUSD * exchangeRate;
+                return `R$ ${priceBRL.toFixed(2)}`;
+            }
+        }
+
+        function getTypeLabel(type) {
+            const labels = {
+                'high-end': { pt: 'High End', en: 'High End' },
+                'low-end': { pt: 'Low End', en: 'Low End' },
+                'custo-beneficio': { pt: 'Custo Benefício', en: 'Best Value' }
+            };
+            return labels[type][currentLang];
+        }
+
+        function renderAccounts(filter = 'all') {
+            const container = document.getElementById('accountsContainer');
+            container.innerHTML = '';
+            
+            const filteredAccounts = filter === 'all' 
+                ? accounts 
+                : accounts.filter(acc => acc.type === filter);
+            
+            filteredAccounts.forEach(account => {
+                const card = `
+                    <div class="col-md-6 col-lg-4 account-card" data-type="${account.type}">
+                        <div class="card" onclick="openModal(${account.id})">
+                            <div class="card-img-placeholder">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-title">${account.name}</h3>
+                                <div class="tags">
+                                    <span class="tag">${getTypeLabel(account.type)}</span>
+                                    <span class="tag"><i class="fas fa-gem"></i> ${account.relics.diamond}</span>
+                                    <span class="tag"><i class="fas fa-trophy"></i> ${account.relics.gold}</span>
+                                </div>
+                                <div class="price">${formatPrice(account.priceUSD)}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        function filterAccounts(type) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            renderAccounts(type);
+        }
+
+        function openModal(accountId) {
+            const account = accounts.find(acc => acc.id === accountId);
+            const t = translations[currentLang];
+            
+            const modalContent = `
+                <div class="relics-section">
+                    <h4><i class="fas fa-gem"></i> ${t.relicsTitle}</h4>
+                    <div class="relic-item">
+                        <span><i class="fas fa-star"></i> ${t.diamond}</span>
+                        <strong>${account.relics.diamond}</strong>
+                    </div>
+                    <div class="relic-item">
+                        <span><i class="fas fa-trophy"></i> ${t.gold}</span>
+                        <strong>${account.relics.gold}</strong>
+                    </div>
+                </div>
+                
+                <div class="description-section">
+                    <h4><i class="fas fa-info-circle"></i> ${t.description}</h4>
+                    <p>${account.description[currentLang]}</p>
+                </div>
+                
+                <div class="modal-footer-custom">
+                    <div class="price">${formatPrice(account.priceUSD)}</div>
+                    <a href="https://discord.gg/eDQKnSbsE6" target="_blank" class="discord-btn">
+                        <i class="fab fa-discord"></i> ${t.buyNow}
+                    </a>
+                </div>
+            `;
+            
+            document.getElementById('modalTitle').textContent = account.name;
+            document.getElementById('modalBody').innerHTML = modalContent;
+            
+            const modal = new bootstrap.Modal(document.getElementById('accountModal'));
+            modal.show();
+        }
+
+        fetchExchangeRate();
+    </script>
+</body>
+</html>

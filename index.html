@@ -50,6 +50,31 @@
         .navbar-brand span {
             color: var(--primary);
         }
+
+        .nav-tabs {
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+        }
+
+        .nav-tabs .nav-link {
+            color: #94a3b8;
+            border: none;
+            padding: 12px 24px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: var(--primary);
+            border: none;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--light);
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--primary);
+        }
         
         .lang-switch, .currency-switch {
             background: transparent;
@@ -167,6 +192,18 @@
             background: linear-gradient(45deg, transparent, rgba(99, 102, 241, 0.1), transparent);
             animation: shine 3s infinite;
         }
+
+        .promo-banner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://i.imgur.com/6x8CiFC.png');
+            background-size: cover;
+            background-position: center;
+            z-index: 10;
+        }
         
         @keyframes shine {
             0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
@@ -200,6 +237,12 @@
             font-size: 0.85rem;
             font-weight: 500;
             border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .tag.exclusive {
+            background: rgba(255, 215, 0, 0.15);
+            color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.3);
         }
         
         .price {
@@ -267,6 +310,10 @@
             border-radius: 10px;
             border-left: 3px solid var(--primary);
         }
+
+        .relic-item.no-count {
+            border-left-color: #64748b;
+        }
         
         .relic-item span {
             color: #94a3b8;
@@ -325,6 +372,86 @@
             border-top: 1px solid var(--border);
             margin-top: 24px;
         }
+
+        .service-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+        }
+
+        .service-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15);
+        }
+
+        .service-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--light);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .service-description {
+            color: #94a3b8;
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .pricing-table {
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .pricing-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            margin: 8px 0;
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+        }
+
+        .pricing-item-left {
+            color: var(--light);
+            font-weight: 500;
+        }
+
+        .pricing-item-right {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .warning-box {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 20px 0;
+            display: flex;
+            gap: 12px;
+            align-items: start;
+        }
+
+        .warning-box i {
+            color: #ffc107;
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+
+        .warning-box p {
+            color: #94a3b8;
+            margin: 0;
+            line-height: 1.6;
+        }
         
         footer {
             text-align: center;
@@ -354,6 +481,12 @@
                 width: 100%;
                 justify-content: center;
             }
+
+            .pricing-item {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -381,14 +514,79 @@
             <p id="heroSubtitle">Contas premium de Skullgirls Mobile com os melhores preços</p>
         </div>
 
-        <div class="filters">
-            <button class="filter-btn active" onclick="filterAccounts('all')" data-en="All Accounts" data-pt="Todas as Contas">Todas as Contas</button>
-            <button class="filter-btn" onclick="filterAccounts('high-end')" data-en="High End" data-pt="High End">High End</button>
-            <button class="filter-btn" onclick="filterAccounts('low-end')" data-en="Low End" data-pt="Low End">Low End</button>
-            <button class="filter-btn" onclick="filterAccounts('custo-beneficio')" data-en="Best Value" data-pt="Custo Benefício">Custo Benefício</button>
-        </div>
+        <ul class="nav nav-tabs justify-content-center" id="mainTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="accounts-tab" data-bs-toggle="tab" data-bs-target="#accounts" type="button" role="tab">
+                    <span data-en="Accounts" data-pt="Contas">Contas</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="services-tab" data-bs-toggle="tab" data-bs-target="#services" type="button" role="tab">
+                    <span data-en="Services" data-pt="Serviços">Serviços</span>
+                </button>
+            </li>
+        </ul>
 
-        <div class="row" id="accountsContainer"></div>
+        <div class="tab-content" id="mainTabsContent">
+            <!-- ACCOUNTS TAB -->
+            <div class="tab-pane fade show active" id="accounts" role="tabpanel">
+                <div class="filters">
+                    <button class="filter-btn active" onclick="filterAccounts('all')" data-en="All Accounts" data-pt="Todas as Contas">Todas as Contas</button>
+                    <button class="filter-btn" onclick="filterAccounts('high-end')" data-en="High End" data-pt="High End">High End</button>
+                    <button class="filter-btn" onclick="filterAccounts('low-end')" data-en="Low End" data-pt="Low End">Low End</button>
+                    <button class="filter-btn" onclick="filterAccounts('custo-beneficio')" data-en="Best Value" data-pt="Custo Benefício">Custo Benefício</button>
+                </div>
+
+                <div class="row" id="accountsContainer"></div>
+            </div>
+
+            <!-- SERVICES TAB -->
+            <div class="tab-pane fade" id="services" role="tabpanel">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="service-card">
+                            <h2 class="service-title" data-en="Diamond Relic Farming" data-pt="Farming de Relíquias Diamante">Farming de Relíquias Diamante</h2>
+                            <p class="service-description" data-en="Get thousands of diamond relics added to your account." data-pt="Receba milhares de relíquias diamante adicionadas à sua conta.">Receba milhares de relíquias diamante adicionadas à sua conta.</p>
+                            
+                            <div class="pricing-table" id="diamondPricing"></div>
+
+                            <div class="warning-box">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p data-en="This service requires temporary access to your account for farming. Contact us on Discord for more details." data-pt="Este serviço requer acesso temporário à sua conta para farming. Entre em contato pelo Discord para mais detalhes.">Este serviço requer acesso temporário à sua conta para farming. Entre em contato pelo Discord para mais detalhes.</p>
+                            </div>
+
+                            <a href="https://discord.gg/eDQKnSbsE6" target="_blank" class="discord-btn">
+                                <i class="fab fa-discord"></i> <span data-en="Order on Discord" data-pt="Encomendar no Discord">Encomendar no Discord</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="service-card">
+                            <h2 class="service-title" data-en="XP Theonite Boost" data-pt="Boost de Especiarias de XP">Boost de Especiarias de XP</h2>
+                            <p class="service-description" data-en="Level up your fighters faster with XP theonite packages." data-pt="Suba o nível dos seus lutadores mais rápido com pacotes de especiarias de XP.">Suba o nível dos seus lutadores mais rápido com pacotes de especiarias de XP.</p>
+                            
+                            <div class="pricing-table">
+                                <div class="pricing-item">
+                                    <span class="pricing-item-left" data-en="1,000 XP Theonite" data-pt="1.000 Especiarias de XP">1.000 Especiarias de XP</span>
+                                    <span class="pricing-item-right" id="xpPrice"></span>
+                                </div>
+                                <p style="color: #94a3b8; margin-top: 16px; font-size: 0.95rem;" data-en="Custom amounts available - contact us for quotes" data-pt="Quantidades personalizadas disponíveis - entre em contato para orçamento">Quantidades personalizadas disponíveis - entre em contato para orçamento</p>
+                            </div>
+
+                            <div class="warning-box">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <p data-en="This service requires temporary access to your account for farming. Contact us on Discord for more details." data-pt="Este serviço requer acesso temporário à sua conta para farming. Entre em contato pelo Discord para mais detalhes.">Este serviço requer acesso temporário à sua conta para farming. Entre em contato pelo Discord para mais detalhes.</p>
+                            </div>
+
+                            <a href="https://discord.gg/eDQKnSbsE6" target="_blank" class="discord-btn">
+                                <i class="fab fa-discord"></i> <span data-en="Order on Discord" data-pt="Encomendar no Discord">Encomendar no Discord</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Modal -->
@@ -416,62 +614,31 @@
         let exchangeRate = 5.5;
         
         const accounts = [
+
             {
                 id: 1,
-                name: "Conta Elite Diamante",
-                type: "high-end",
-                priceUSD: 150,
-                relics: {
-                    diamond: 25,
-                    gold: 50
-                },
-                description: {
-                    pt: "Conta completa com personagens raros e diamantes premium. Ideal para jogadores que buscam o máximo de poder e competitividade no jogo.",
-                    en: "Complete account with rare characters and premium diamonds. Perfect for players seeking maximum power and competitiveness in the game."
-                }
-            },
-            {
-                id: 2,
-                name: "Conta Iniciante Plus",
-                type: "low-end",
-                priceUSD: 35,
-                relics: {
-                    diamond: 3,
-                    gold: 15
-                },
-                description: {
-                    pt: "Ótima conta para começar sua jornada no Skullgirls Mobile com bons recursos iniciais e personagens essenciais.",
-                    en: "Great account to start your Skullgirls Mobile journey with good initial resources and essential characters."
-                }
-            },
-            {
-                id: 3,
-                name: "Conta Ouro Premium",
+                name: "Medici Pro Fighter",
                 type: "custo-beneficio",
-                priceUSD: 80,
+                priceUSD: 30,
+                hasExclusive: true,
                 relics: {
-                    diamond: 12,
-                    gold: 35
+                    diamond: 500,
+                    gold: 500
                 },
                 description: {
                     pt: "Melhor custo-benefício disponível! Conta equilibrada com ótimos personagens e recursos abundantes para progredir rapidamente.",
                     en: "Best value available! Balanced account with great characters and abundant resources to progress quickly."
                 }
             },
-            {
-                id: 4,
-                name: "Conta Pro Fighter",
-                type: "high-end",
-                priceUSD: 200,
-                relics: {
-                    diamond: 40,
-                    gold: 80
-                },
-                description: {
-                    pt: "Para competidores sérios! Conta top tier com todos os recursos necessários para dominar as competições e rankings.",
-                    en: "For serious competitors! Top tier account with all resources needed to dominate competitions and rankings."
-                }
-            }
+
+        ];
+
+        const diamondPricing = [
+            { amount: "1,000+", priceUSD: 38 },
+            { amount: "2,200+", priceUSD: 55 },
+            { amount: "8,000+", priceUSD: 110 },
+            { amount: "20,000+", priceUSD: 210 },
+            { amount: "50,000+", priceUSD: 310 }
         ];
 
         async function fetchExchangeRate() {
@@ -483,6 +650,7 @@
                 console.log('Using fallback exchange rate');
             }
             renderAccounts();
+            renderServicePricing();
         }
 
         const translations = {
@@ -490,12 +658,15 @@
                 heroTitle: "Contas Premium",
                 heroSubtitle: "Contas premium de Skullgirls Mobile com os melhores preços",
                 relicsTitle: "Relíquias Disponíveis",
-                diamond: "Relíquias Diamante",
+                diamond: "Relíquias de Diamante",
                 gold: "Relíquias de Ouro",
+                otherRelics: "Outras Relíquias",
+                exclusiveChar: "Personagem Exclusivo",
                 description: "Descrição da Conta",
                 buyNow: "Comprar no Discord",
                 footerText: "© 2025 Skullgirls Mobile Store. Todos os direitos reservados.",
-                footerDisclaimer: "Site não oficial. Skullgirls é marca registrada de Autumn Games."
+                footerDisclaimer: "Site não oficial. Skullgirls é marca registrada de Autumn Games.",
+                diamondRelics: "Relíquias Diamante"
             },
             en: {
                 heroTitle: "Premium Accounts",
@@ -503,10 +674,13 @@
                 relicsTitle: "Available Relics",
                 diamond: "Diamond Relics",
                 gold: "Gold Relics",
+                otherRelics: "Other Relics",
+                exclusiveChar: "Exclusive Character",
                 description: "Account Description",
                 buyNow: "Buy on Discord",
                 footerText: "© 2025 Skullgirls Mobile Store. All rights reserved.",
-                footerDisclaimer: "Unofficial website. Skullgirls is a registered trademark of Autumn Games."
+                footerDisclaimer: "Unofficial website. Skullgirls is a registered trademark of Autumn Games.",
+                diamondRelics: "Diamond Relics"
             }
         };
 
@@ -515,12 +689,14 @@
             document.getElementById('langText').textContent = currentLang === 'pt' ? 'EN' : 'PT';
             updateTranslations();
             renderAccounts();
+            renderServicePricing();
         }
 
         function toggleCurrency() {
             currentCurrency = currentCurrency === 'BRL' ? 'USD' : 'BRL';
             document.getElementById('currencyText').textContent = currentCurrency;
             renderAccounts();
+            renderServicePricing();
         }
 
         function updateTranslations() {
@@ -530,8 +706,14 @@
             document.getElementById('footerText').textContent = t.footerText;
             document.getElementById('footerDisclaimer').textContent = t.footerDisclaimer;
             
+            document.querySelectorAll('[data-en]').forEach(el => {
+                if (!el.classList.contains('filter-btn')) {
+                    el.textContent = el.getAttribute(`data-${currentLang}`);
+                }
+            });
+
             document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.textContent = btn.getAttribute(`data-${currentLang}`);
+                btn.childNodes[0].textContent = btn.getAttribute(`data-${currentLang}`);
             });
         }
 
@@ -553,8 +735,27 @@
             return labels[type][currentLang];
         }
 
+        function renderServicePricing() {
+            const container = document.getElementById('diamondPricing');
+            const t = translations[currentLang];
+            container.innerHTML = '';
+            
+            diamondPricing.forEach(tier => {
+                const item = document.createElement('div');
+                item.className = 'pricing-item';
+                item.innerHTML = `
+                    <span class="pricing-item-left">${tier.amount} ${t.diamondRelics}</span>
+                    <span class="pricing-item-right">${formatPrice(tier.priceUSD)}</span>
+                `;
+                container.appendChild(item);
+            });
+
+            document.getElementById('xpPrice').textContent = formatPrice(3);
+        }
+
         function renderAccounts(filter = 'all') {
             const container = document.getElementById('accountsContainer');
+            const t = translations[currentLang];
             container.innerHTML = '';
             
             const filteredAccounts = filter === 'all' 
@@ -562,11 +763,15 @@
                 : accounts.filter(acc => acc.type === filter);
             
             filteredAccounts.forEach(account => {
+                const exclusiveTag = account.hasExclusive 
+                    ? `<span class="tag exclusive"><i class="fas fa-star"></i> ${t.exclusiveChar}</span>` 
+                    : '';
+                
                 const card = `
                     <div class="col-md-6 col-lg-4 account-card" data-type="${account.type}">
                         <div class="card" onclick="openModal(${account.id})">
                             <div class="card-img-placeholder">
-                                <i class="fas fa-image"></i>
+                                <img src="https://i.imgur.com/6x8CiFC.png" alt="Banner Promocional" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 10;">
                             </div>
                             <div class="card-body">
                                 <h3 class="card-title">${account.name}</h3>
@@ -574,6 +779,7 @@
                                     <span class="tag">${getTypeLabel(account.type)}</span>
                                     <span class="tag"><i class="fas fa-gem"></i> ${account.relics.diamond}</span>
                                     <span class="tag"><i class="fas fa-trophy"></i> ${account.relics.gold}</span>
+                                    ${exclusiveTag}
                                 </div>
                                 <div class="price">${formatPrice(account.priceUSD)}</div>
                             </div>
@@ -596,17 +802,29 @@
             const account = accounts.find(acc => acc.id === accountId);
             const t = translations[currentLang];
             
+            const exclusiveSection = account.hasExclusive 
+                ? `<div class="relic-item no-count">
+                    <span><i class="fas fa-star"></i> ${t.exclusiveChar}</span>
+                    <i class="fas fa-check" style="color: #10b981; font-size: 1.5rem;"></i>
+                   </div>` 
+                : '';
+            
             const modalContent = `
                 <div class="relics-section">
                     <h4><i class="fas fa-gem"></i> ${t.relicsTitle}</h4>
                     <div class="relic-item">
-                        <span><i class="fas fa-star"></i> ${t.diamond}</span>
+                        <span><i class="fas fa-gem"></i> ${t.diamond}</span>
                         <strong>${account.relics.diamond}</strong>
                     </div>
                     <div class="relic-item">
                         <span><i class="fas fa-trophy"></i> ${t.gold}</span>
                         <strong>${account.relics.gold}</strong>
                     </div>
+                    <div class="relic-item no-count">
+                        <span><i class="fas fa-box"></i> ${t.otherRelics}</span>
+                        <i class="fas fa-check" style="color: #10b981; font-size: 1.5rem;"></i>
+                    </div>
+                    ${exclusiveSection}
                 </div>
                 
                 <div class="description-section">
